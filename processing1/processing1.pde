@@ -3,6 +3,24 @@ import ddf.minim.*;
 Minim  minim;
 AudioPlayer file;
 
+//Millis
+int startMillis;
+int duration = 100000;
+
+//Ellipse animation
+int x = 554;
+int y = 520;
+
+//Score i Fails
+int score = 0;
+int fails = 0;
+
+//Slider llum pantalla
+import controlP5.*;
+ControlP5 cp5;
+int myColor = color(35,0,62);
+int sliderTicks2 = 30;
+
 //variables Tipografia
 PFont fontBold;
 PFont fontRegular;
@@ -44,6 +62,7 @@ float oh = 80;
 boolean started = false;
 
 int gameTime = 0;
+
 int screen = 0;
 
 // Declare music arrrays
@@ -64,12 +83,21 @@ int[][] myArray = {  {0, 1, 2, 3},
                      {3, 8, 3, 4}  };
 
 void setup(){
-  //fullScreen();
   size(1024,1024);
   //Tipografia
   fontBold = loadFont("BalooDa2-Bold.vlw");
   fontRegular = loadFont("BalooDa2-Regular.vlw");
   
+  //Slider llum
+  /*cp5 = new ControlP5(this);
+  cp5.addSlider("sliderTicks2")
+     .setPosition(100,370)
+     .setWidth(400)
+     .setRange(255,0) // values can range from big to small as well
+     .setValue(128)
+     .setNumberOfTickMarks(7)
+     .setSliderMode(Slider.FLEXIBLE);*/
+     
   //music
   minim = new Minim (this);
   file =  minim.loadFile("/music/baby-shark.mp3");
@@ -115,7 +143,7 @@ void draw(){
  
    //OPTIONS
    if (screen == 3){
-   screen3();  
+   screen3();
   }
  
 
@@ -259,7 +287,6 @@ void screen1(){
 void screen2(){
     gameTime = millis();
     //********** PANTALLA PROJECTOR **********
-    file.play();
     textFont(fontBold);
     textSize(45);
     textAlign(CENTER);
@@ -275,13 +302,17 @@ void screen2(){
     
     //********** PANTALLA REACTABLE **********
     textFont(fontBold);
-    fill(255);
+    fill(255,0,0);
     textSize(24);
     text("FAILS", 180, 750);
+    text(fails, 180, 790);
+    fill(255);
     text("SCORE", 844, 750);
+    text(score, 844, 790);
     //rect
     fill(35,0,62);
-    rect(310,680,400,200);
+    line(512,0,512,1024);
+    rect(230,680,550,200);
 
     
     fill(255);
@@ -290,9 +321,19 @@ void screen2(){
     
     line(554,512,554,1024);
     line(636,512,636,1024);
+   
+    //play music
+    //file.play();
     
-    //line();
-    //print(gameTime+"\n");
+    /*if(mousePressed){
+      startMillis = millis();
+    }
+    
+    if(millis() < startMillis + duration){
+      ellipse(554,y,30,30);
+      y = y + 1;
+    }*/
+    
     crearFigures();
     pintarFigures();
     borrarFigures();
@@ -300,43 +341,60 @@ void screen2(){
 }
 
 void crearFigures(){
-  for (int i = 0 ; i < 3 ; i++){
-    //print(i);
+  for (int i = 0 ; i <= 3 ; i++){
       for (int j = 0 ; j < babyshark[i].length-1 ; j++){
-        print(j);
-        if (gameTime < babyshark[i][j] + 100 && gameTime > babyshark[i][j] - 100){
+        if (gameTime < babyshark[i][j] + 10 && gameTime > babyshark[i][j] - 10){
           //pintar peça amb numero babyshark[i];
           if (i==0){
-            crearRodona();
-          }else if (i==2){
-            crearQuadrat();
+            crearQuadratBlau();
+          }else if (i==1){
+            crearQuadratVerd();
+          }
+          else if (i==2){
+            crearQuadratGroc();
           }
           else if (i==3){
-            crearTriangle();
+            crearQuadratVermell();
           }
-          else if (i==4){
-            crearRombe();
-          }
+          break;
         }
       }
     }
 }
 
 void pintarFigures(){
-  print(figures);
+  strokeWeight(0);
   for (Figura figura : figures) { 
     figura.pintar();
   }
-}
-void borrarFigures(){
-  for (Figura figura : new ArrayList<Figura>(figures)){
-    if (figura.getY() > 700){
-      figures.remove(figura);
-    }    
-  }
+  strokeWeight(5);
 }
 
-//OPTIONS
+void borrarFigures(){
+  //ArrayList<Figura> figures2 = new ArrayList();
+  ArrayList<Figura> figures2 = new ArrayList<Figura>(figures.size());
+    for (Figura figura : figures) {
+        figures2.add(figura);
+    }
+  for (Figura figura : figures2){
+    if (figura.getY() > 950){
+      figures.remove(figura);
+      fails++;
+    } 
+  } 
+}
+
+void mouseClicked(){
+  if (mouseButton == LEFT) {
+    for (Figura figura : new ArrayList<Figura>(figures)){
+      if(figura.isOver()){
+        print("dins \n");
+        figures.remove(figura);
+        score++;
+      }
+    }
+  }
+}
 void screen3(){
     textAlign(CENTER);
     //********** PANTALLA PROJECTOR **********
@@ -353,16 +411,8 @@ void screen3(){
     textSize(24);
     //text("Options of the game", 512, 768);
     image(musicOptions, 400,720,50,50);
-    //if (mousePressed) {
-    //positionMusic1=mouseX;
-    //}
-    //line(0, 15, 100, 15);
-    //fill(0); 
-    //rect(positionMusic1, 10, 5, 15);
-    text("slider of the music", 550, 730);
-    text("slider of the light", 550, 830);
     image(lightOptions, 400, 820, 50,50);
-    image (checkOptions, 512,950,80,80); 
+    image (checkOptions, 512,950,80,80);
 }
 
 //WIN SCREEN
@@ -374,19 +424,18 @@ void screen4(){
     text("YOU WIN", 512,256);
     imageMode(CENTER);
     image (youWin, 512,350,60,60);
-    
-    //********** PANTALLA REACTABLE **********   
+    //********** PANTALLA REACTABLE **********     
 }
 
-void crearRodona(){
-  figures.add(new Rodona(512,200));
+void crearQuadratBlau(){
+  figures.add(new QuadratBlau(554,512));
 }
-void crearTriangle(){
-
+void crearQuadratVerd(){
+  figures.add(new QuadratVerd(622,512));
 }
-void crearQuadrat(){
-
+void crearQuadratGroc(){
+  figures.add(new QuadratGroc(458,512));
 }
-void crearRombe(){
-
+void crearQuadratVermell(){
+  figures.add(new QuadratVermell(383,512));
 }

@@ -1,16 +1,21 @@
 class Figura {
-  int posx, posy;
+  float posx, posy;
   Figura(int posx,int posy){
     this.posx = posx;
     this.posy = posy;
   }
   
   public void pintar(){
-    ellipse(posx, posy, 25,25);
-    posy = posy +1;
+    //ellipse(posx, posy, 25,25);
+    //posy = posy +1;
   }
   
-  public int getY(){
+  public float getY(){
     return this.posy;
+  }
+  
+  public  boolean isOver()
+  {
+   return true;
   }
 }
