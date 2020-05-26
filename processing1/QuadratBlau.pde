@@ -8,7 +8,7 @@ class QuadratBlau extends Figura{
   
   @ Override public void pintar(){
     fill(41, 128, 185);
-    rect(posx,posy,25,25);    
+    rect(posx,posy,50,50);    
     posy = posy +1;
   }
   
@@ -18,9 +18,9 @@ class QuadratBlau extends Figura{
   public  boolean isOver()
   {  
     if (mouseX > this.posx
-        && mouseX < this.posx+25
+        && mouseX < this.posx+50
         && mouseY > this.posy
-        && mouseY < this.posy+25)
+        && mouseY < this.posy+50)
       {
         return true;
       }
@@ -28,5 +28,9 @@ class QuadratBlau extends Figura{
       {
         return false;
       }
+  }
+  
+  public String getColour(){
+     return "blue"; 
   }
 }

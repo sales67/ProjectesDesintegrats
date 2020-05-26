@@ -8,7 +8,7 @@ class QuadratGroc extends Figura{
   
   @ Override public void pintar(){
     fill(241, 196, 15);
-    rect(posx,posy,25,25);   
+    rect(posx,posy,50,50);   
     posy = posy +1;
   }
   
@@ -28,5 +28,8 @@ class QuadratGroc extends Figura{
       {
         return false;
       }
+  }
+  public String getColour(){
+     return "yellow"; 
   }
 }

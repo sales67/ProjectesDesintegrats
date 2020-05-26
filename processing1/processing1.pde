@@ -68,10 +68,10 @@ int screen = 0;
 // Declare music arrrays
 // Babyshark song
 int[][] babyshark = {
-{2900,5000,7000,8000,14200,23600,24100,24600},
-{11100,12600,19500,21600,22600,28300},
-{9100,9600,15900,20100,20800,25200,26800},
-{10100,13100,14900,21100,22100,23100},
+{12900,15000,17000,18000,24200,33600,34100,34600},
+{21100,22600,29500,31600,32600,38300},
+{19100,19600,25900,30100,30800,35200,36800},
+{20100,23100,24900,31100,32100,33100},
 };
 
 // declarar l'array de les figures que estan actives.
@@ -169,7 +169,8 @@ void draw(){
 void mousePressed() {
   //Set the screen when whatever happens that you want to happen
   if(mousePressed){
-      if(mouseX>mx && mouseX <mx+mw && mouseY>my && mouseY <my+mh){
+    print(screen);
+      if(mouseX>mx && mouseX <mx+mw && mouseY>my && mouseY <my+mh && screen == 0){
        screen = 1;
        mx = 0;
        my = 0;
@@ -184,14 +185,14 @@ void mousePressed() {
        ow = 150;
        oh = 80;
   }  
-      if(mouseX>px && mouseX <px+pw && mouseY>py && mouseY <py+ph){
+      if(mouseX>px && mouseX <px+pw && mouseY>py && mouseY <py+ph && screen == 1){
        screen = 2;
        ox = 0;
        oy = 0;
        ow = 0;
        oh = 0;
   }
-      if(mouseX>ox && mouseX <ox+ow && mouseY>oy && mouseY <oy+oh){
+      if(mouseX>ox && mouseX <ox+ow && mouseY>oy && mouseY <oy+oh && screen == 2){
        screen = 3;
        px = 0;
        py = 0;
@@ -204,25 +205,45 @@ void mousePressed() {
 void keyPressed() {
   //exitGame
   if (screen == 1){
-    exit();
+   // exit();
   }
   
   //return Start
   if(screen == 5){
-    screen = 1;
+   // screen = 1;
   }
   
-  if (screen == 2) {
-    screen = 1;
-       px = 435;
+  if (screen == 2) {   
+    if (mouseButton == LEFT){
+      for (Figura figura : new ArrayList<Figura>(figures)){
+        if (figura.isOver()){
+          if(figura.getColour() == "blue" && keyCode == 81){
+            figures.remove(figura);
+            score++;          
+          }if(figura.getColour() == "yellow" && keyCode == 87){
+            figures.remove(figura);
+            score++;          
+          }if(figura.getColour() == "green" && keyCode == 69){
+            figures.remove(figura);
+            score++;          
+          }if(figura.getColour() == "red" && keyCode == 82){
+            figures.remove(figura);
+            score++;          
+          }
+         }
+      }      
+    } 
+   // screen = 1;
+     /*  px = 435;
        py = 620;
        pw = 150;
        ph = 80;
        ox = 435;
        oy = 750;
        ow = 150;
-       oh = 80;
+       oh = 80;*/
   } else if (screen == 3){
+    /*
     screen = 1;
        px = 435;
        py = 620;
@@ -231,7 +252,7 @@ void keyPressed() {
        ox = 435;
        oy = 750;
        ow = 150;
-       oh = 80;
+       oh = 80;*/
   }
 }
 
@@ -385,15 +406,7 @@ void borrarFigures(){
 }
 
 void mouseClicked(){
-  if (mouseButton == LEFT) {
-    for (Figura figura : new ArrayList<Figura>(figures)){
-      if(figura.isOver()){
-        print("dins \n");
-        figures.remove(figura);
-        score++;
-      }
-    }
-  }
+  
 }
 void screen3(){
     textAlign(CENTER);
@@ -427,15 +440,31 @@ void screen4(){
     //********** PANTALLA REACTABLE **********     
 }
 
-void crearQuadratBlau(){
-  figures.add(new QuadratBlau(554,512));
+void crearQuadratBlau(){  
+  int pos = calcularPosicio();
+  figures.add(new QuadratBlau(pos,512));
 }
 void crearQuadratVerd(){
-  figures.add(new QuadratVerd(622,512));
+  int pos = calcularPosicio();
+  figures.add(new QuadratVerd(pos,512));
 }
 void crearQuadratGroc(){
-  figures.add(new QuadratGroc(458,512));
+  int pos = calcularPosicio();
+  figures.add(new QuadratGroc(pos,512));
 }
 void crearQuadratVermell(){
-  figures.add(new QuadratVermell(383,512));
+  int pos = calcularPosicio();
+  figures.add(new QuadratVermell(pos,512));
+}
+int calcularPosicio(){
+  int r = int(random(0,3));
+   if (r == 0){
+     return 383;
+  }else if (r == 1){
+     return 458; 
+  }else if(r == 2){
+     return 554;
+  }else{
+     return 622;
+  }
 }

@@ -8,7 +8,7 @@ class QuadratVerd extends Figura{
   
   @ Override public void pintar(){
     fill(46, 204, 113);
-    rect(posx,posy,25,25);     
+    rect(posx,posy,50,50);     
     posy = posy +1;
   }
   
@@ -28,5 +28,8 @@ class QuadratVerd extends Figura{
       {
         return false;
       }
+  }
+  public String getColour(){
+     return "green"; 
   }
 }

@@ -18,4 +18,7 @@ class Figura {
   {
    return true;
   }
+  public String getColour(){
+     return "-"; 
+  }  
 }

@@ -8,7 +8,7 @@ class QuadratVermell extends Figura{
   
   @ Override public void pintar(){
     fill(192, 57, 43);
-    rect(posx,posy,25,25);   
+    rect(posx,posy,50,50);   
     posy = posy +1;
   }
   
@@ -28,5 +28,8 @@ class QuadratVermell extends Figura{
       {
         return false;
       }
+  }
+  public String getColour(){
+     return "red"; 
   }
 }
