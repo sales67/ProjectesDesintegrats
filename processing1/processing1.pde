@@ -68,10 +68,10 @@ int screen = 0;
 // Declare music arrrays
 // Babyshark song
 int[][] babyshark = {
-{12900,15000,17000,18000,24200,33600,34100,34600},
-{21100,22600,29500,31600,32600,38300},
-{19100,19600,25900,30100,30800,35200,36800},
-{20100,23100,24900,31100,32100,33100},
+{12900,17000,20000,23000,27200,39600,40100,47600,60000,69000,81000,84000,90000,91000},
+{25100,32100,35000,36600,44600,48300,57000,62000,70000,80000,82000,89000,92000,92000},
+{22100,30600,33100,41100,46800,50200,55800,63000,72000,77000,83000,88000,93000},
+{26100,28100,28900,38100,42100,53100,58000,67000,74000,75000,76000,85000},
 };
 
 // declarar l'array de les figures que estan actives.
@@ -88,15 +88,6 @@ void setup(){
   fontBold = loadFont("BalooDa2-Bold.vlw");
   fontRegular = loadFont("BalooDa2-Regular.vlw");
   
-  //Slider llum
-  /*cp5 = new ControlP5(this);
-  cp5.addSlider("sliderTicks2")
-     .setPosition(100,370)
-     .setWidth(400)
-     .setRange(255,0) // values can range from big to small as well
-     .setValue(128)
-     .setNumberOfTickMarks(7)
-     .setSliderMode(Slider.FLEXIBLE);*/
      
   //music
   minim = new Minim (this);
@@ -149,7 +140,7 @@ void draw(){
 
   //YOU WIN
   if (screen == 4){
-   
+   screen4();
   }
   
   //YOU LOSE
@@ -199,20 +190,14 @@ void mousePressed() {
        pw = 0;
        ph = 0;
   }
+  if (screen == 4){
+    screen = 1; 
+  }
  }
 }
 
 void keyPressed() {
-  //exitGame
-  if (screen == 1){
    // exit();
-  }
-  
-  //return Start
-  if(screen == 5){
-   // screen = 1;
-  }
-  
   if (screen == 2) {   
     if (mouseButton == LEFT){
       for (Figura figura : new ArrayList<Figura>(figures)){
@@ -232,27 +217,7 @@ void keyPressed() {
           }
          }
       }      
-    } 
-   // screen = 1;
-     /*  px = 435;
-       py = 620;
-       pw = 150;
-       ph = 80;
-       ox = 435;
-       oy = 750;
-       ow = 150;
-       oh = 80;*/
-  } else if (screen == 3){
-    /*
-    screen = 1;
-       px = 435;
-       py = 620;
-       pw = 150;
-       ph = 80;
-       ox = 435;
-       oy = 750;
-       ow = 150;
-       oh = 80;*/
+    }
   }
 }
 
@@ -344,16 +309,11 @@ void screen2(){
     line(636,512,636,1024);
    
     //play music
-    //file.play();
-    
-    /*if(mousePressed){
-      startMillis = millis();
+    file.play();
+
+    if (gameTime > 98000){
+      screen = 4;
     }
-    
-    if(millis() < startMillis + duration){
-      ellipse(554,y,30,30);
-      y = y + 1;
-    }*/
     
     crearFigures();
     pintarFigures();
@@ -364,7 +324,7 @@ void screen2(){
 void crearFigures(){
   for (int i = 0 ; i <= 3 ; i++){
       for (int j = 0 ; j < babyshark[i].length-1 ; j++){
-        if (gameTime < babyshark[i][j] + 10 && gameTime > babyshark[i][j] - 10){
+        if (gameTime < babyshark[i][j] + 9 && gameTime > babyshark[i][j] - 9){
           //pintar peça amb numero babyshark[i];
           if (i==0){
             crearQuadratBlau();
@@ -434,7 +394,10 @@ void screen4(){
     //********** PANTALLA PROJECTOR **********
     textFont(fontBold);
     textSize(70);
-    text("YOU WIN", 512,256);
+    text("FINISH", 512,256);
+    text("YOUR FINAL SCORE IS: "+score, 512,756);
+    textSize(20);
+    text("PRESS ANYWHERE TO GO TO MENU"+score, 512,856);
     imageMode(CENTER);
     image (youWin, 512,350,60,60);
     //********** PANTALLA REACTABLE **********     
