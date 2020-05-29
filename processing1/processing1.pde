@@ -2,6 +2,7 @@
 import ddf.minim.*;
 Minim  minim;
 AudioPlayer file;
+AudioPlayer file2;
 
 //Millis
 int startMillis;
@@ -62,7 +63,7 @@ float oh = 80;
 boolean started = false;
 
 int gameTime = 0;
-
+String level = "facil";
 int screen = 0;
 
 // Declare music arrrays
@@ -72,6 +73,12 @@ int[][] babyshark = {
 {25100,32100,35000,36600,44600,48300,57000,62000,70000,80000,82000,89000,92000,92000},
 {22100,30600,33100,41100,46800,50200,55800,63000,72000,77000,83000,88000,93000},
 {26100,28100,28900,38100,42100,53100,58000,67000,74000,75000,76000,85000},
+};
+int[][] spaceunicorn = {
+{12900,20000,23000,27200,47600,60000,81000,84000,90000},
+{32100,35000,36600,48300,57000,70000,89000,92000,92000},
+{22100,41100,46800,50200,63000,72000,77000,83000,93000},
+{26100,28900,38100,53100,58000,67000,74000,76000,85000},
 };
 
 // declarar l'array de les figures que estan actives.
@@ -91,7 +98,8 @@ void setup(){
      
   //music
   minim = new Minim (this);
-  file =  minim.loadFile("/music/baby-shark.mp3");
+  file2 =  minim.loadFile("/music/baby-shark.mp3");
+  file =  minim.loadFile("/music/space-unicorn.mp3");
   
   //img
   logo = loadImage("/img/logo.png");
@@ -309,7 +317,11 @@ void screen2(){
     line(636,512,636,1024);
    
     //play music
-    file.play();
+    if (this.level == "facil"){
+      file.play();
+    }else{
+      file2.play();
+    }
 
     if (gameTime > 98000){
       screen = 4;
@@ -322,9 +334,15 @@ void screen2(){
 }
 
 void crearFigures(){
+  int[][] musica;
+  if (this.level == "facil"){
+    musica = this.spaceunicorn;
+  }else{
+    musica = this.babyshark;
+  }
   for (int i = 0 ; i <= 3 ; i++){
-      for (int j = 0 ; j < babyshark[i].length-1 ; j++){
-        if (gameTime < babyshark[i][j] + 9 && gameTime > babyshark[i][j] - 9){
+      for (int j = 0 ; j < musica[i].length-1 ; j++){
+        if (gameTime < musica[i][j] + 9 && gameTime > musica[i][j] - 9){
           //pintar peça amb numero babyshark[i];
           if (i==0){
             crearQuadratBlau();
