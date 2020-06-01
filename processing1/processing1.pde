@@ -16,12 +16,6 @@ int y = 520;
 int score = 0;
 int fails = 0;
 
-//Slider llum pantalla
-import controlP5.*;
-ControlP5 cp5;
-int myColor = color(35,0,62);
-int sliderTicks2 = 30;
-
 //variables Tipografia
 PFont fontBold;
 PFont fontRegular;
@@ -29,21 +23,16 @@ PFont fontRegular;
 //Variables Imgs
 PImage logo;
 PImage exitGame;
-PImage options;
-PImage musicOptions;
-PImage lightOptions;
-PImage checkOptions;
-PImage cancelOptions;
+PImage help;
+PImage checkInfo;
 PImage musicName;
 PImage youWin;
 PImage youLose;
 
-//Sliders
-int positionMusic1;
-int positionLight1;
-
-//Buttons
-//boolean exitGame = false;
+//Strings Info
+String info = "Falling In Words is a game inspired by the classic game called Guitar Hero, but with the difference that this game is focused on children, and it's designed to be played on a Reactable.";
+String info2 = "This game it's not only for having a good time, it's also to improve their reflexes and concentration";
+String info3 = "Falling in words is developed by EDUARD CASALS, MAGALÍ CRESPO and SERGI SALÉS; students from the University of Vic";
 
 float mx = 0;
 float my = 505;
@@ -104,19 +93,10 @@ void setup(){
   //img
   logo = loadImage("/img/logo.png");
   exitGame = loadImage("/img/exit.png");
-  options = loadImage("/img/options.png");
-  musicOptions = loadImage("/img/music.png");
-  lightOptions = loadImage("/img/light.png");
-  checkOptions = loadImage("/img/check.png");
-  cancelOptions = loadImage("/img/close.png");
+  help = loadImage("/img/info.png");
   musicName = loadImage("/img/music.png");
   youWin = loadImage("/img/win.png");
   youLose = loadImage("/img/lose.png");
-  
-  //sliders
-  positionMusic1 = 0;
-  positionLight1 = 0;
-  
 }//setup
 
 void draw(){
@@ -153,15 +133,7 @@ void draw(){
   
   //YOU LOSE
   if (screen == 5){
-   textAlign(CENTER);
-    //********** PANTALLA PROJECTOR **********
-    textFont(fontBold);
-    textSize(70);
-    text("YOU LOSE", 512,256);
-    imageMode(CENTER);
-    image (youLose, 512,350,60,60);
-    
-    //********** PANTALLA REACTABLE **********   
+    screen5();
   }
  }
 
@@ -239,9 +211,9 @@ void screen0(){
     image (logo, 512,350);
     
     //********** PANTALLA REACTABLE **********
-    textFont(fontRegular);
+    //textFont(fontRegular);
     textSize(24);
-    text("Touch the screen to start the game!", 512, 768);
+    text("TOUCH THE SCREEN TO START THE GAME!", 512, 768);
     fill(0,0,0,0);
     stroke(0,0,0,0);
     rect(mx,my,mw,mh);
@@ -267,13 +239,13 @@ void screen1(){
     textSize(32);
     fill(255);
     text("START", 510, 670);
-    text("OPTIONS", 510, 800);
+    //text("OPTIONS", 510, 800);
     
     textFont(fontBold);
     textSize(18);
     text("EXIT", 580, 990);
-    text("OPTIONS", 444, 990);
-    image(options, 444,920,80,80);
+    text("INFO", 444, 990);
+    image(help, 444,920,80,80);
     image(exitGame, 580,920, 80,80);
 }
 
@@ -294,27 +266,26 @@ void screen2(){
     fill(102,46,155);
     rect(210,200,600,210);
     
-    //********** PANTALLA REACTABLE **********
-    textFont(fontBold);
     fill(255,0,0);
-    textSize(24);
-    text("FAILS", 180, 750);
-    text(fails, 180, 790);
+    textSize(40);
+    text("FAILS", 660, 300);
+    text(fails, 660, 350);
     fill(255);
-    text("SCORE", 844, 750);
-    text(score, 844, 790);
+    text("SCORE", 364, 300);
+    text(score, 364, 350);
+    fill(35,0,62);
+    line(512,200,512,410);
     //rect
     fill(35,0,62);
-    line(512,0,512,1024);
-    rect(230,680,550,200);
-
     
+    //********** PANTALLA REACTABLE **********
+    rect(235, 680,550,200);
     fill(255);
-    line(470,512,470,1024);
-    line(388,512,388,1024);
+    line(440,512,440,1024);
+    line(298,512,298,1024);
     
-    line(554,512,554,1024);
-    line(636,512,636,1024);
+    line(584,512,584,1024);
+    line(726,512,726,1024);
    
     //play music
     if (this.level == "facil"){
@@ -386,6 +357,7 @@ void borrarFigures(){
 void mouseClicked(){
   
 }
+//INFO
 void screen3(){
     textAlign(CENTER);
     //********** PANTALLA PROJECTOR **********
@@ -397,13 +369,12 @@ void screen3(){
     
     //********** PANTALLA REACTABLE **********
     textFont(fontBold);
-    textSize(60);
-    text("OPTIONS", 512, 630);
-    textSize(24);
-    //text("Options of the game", 512, 768);
-    image(musicOptions, 400,720,50,50);
-    image(lightOptions, 400, 820, 50,50);
-    image (checkOptions, 512,950,80,80);
+    textSize(30);
+    text(info, 50, 580, width-100, height-12);
+    text(info2,50,710, width-100, height-12);
+    text(info3, 50, 800, width-100, height-12);
+    
+    image (checkInfo, 512,950,80,80);
 }
 
 //WIN SCREEN
@@ -412,13 +383,49 @@ void screen4(){
     //********** PANTALLA PROJECTOR **********
     textFont(fontBold);
     textSize(70);
-    text("FINISH", 512,256);
-    text("YOUR FINAL SCORE IS: "+score, 512,756);
-    textSize(20);
-    text("PRESS ANYWHERE TO GO TO MENU"+score, 512,856);
+    textAlign(CENTER);
+    fill(102,46,155);
+    rect(210,200,600,210);
+    fill(0, 220, 61);
+    text("YOU WIN", 512,330);    
     imageMode(CENTER);
-    image (youWin, 512,350,60,60);
-    //********** PANTALLA REACTABLE **********     
+    image(youWin, 300, 310, 100, 100);
+    image(youWin, 730, 310, 100, 100);
+    
+    //********** PANTALLA REACTABLE **********
+    textFont(fontBold);
+    textSize(50);
+    fill(255);
+    text("YOUR FINAL SCORE IS: "+score, 512,756);
+    //fill(255);
+    textSize(24);
+    text("TOUCH THE SCREEN TO RETURN TO THE MENU", 512,856);     
+}
+
+void screen5(){
+  textAlign(CENTER);
+    //********** PANTALLA PROJECTOR **********
+    textFont(fontBold);
+    textSize(70);
+    textAlign(CENTER);
+    fill(102,46,155);
+    rect(210,200,600,210);
+    fill(255,46,0);
+    text("YOU LOSE", 512,330);    
+    imageMode(CENTER);
+    image(youLose, 300, 310, 80, 80);
+    image(youLose, 750, 310, 80, 80);
+    
+    //********** PANTALLA REACTABLE **********
+    textFont(fontBold);
+    textSize(50);
+    fill(255, 46,0);
+    text("OOPS, YOU HAVE SCORED 10 FAILS", 512, 650);
+    fill(255);
+    text("YOUR FINAL SCORE IS: "+score, 512,756);
+    //fill(255);
+    textSize(24);
+    text("TOUCH THE SCREEN TO RETURN TO THE MENU", 512,856);  
 }
 
 void crearQuadratBlau(){  
@@ -435,17 +442,17 @@ void crearQuadratGroc(){
 }
 void crearQuadratVermell(){
   int pos = calcularPosicio();
-  figures.add(new QuadratVermell(pos,512));
+  figures.add(new QuadratVermell(pos,512));q
 }
 int calcularPosicio(){
   int r = int(random(0,3));
    if (r == 0){
-     return 383;
+     return 273;
   }else if (r == 1){
-     return 458; 
+     return 415; 
   }else if(r == 2){
-     return 554;
+     return 559;
   }else{
-     return 622;
+     return 701;
   }
 }
