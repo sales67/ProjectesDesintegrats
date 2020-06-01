@@ -54,6 +54,11 @@ float ey = 882;
 float ew = 75;
 float eh = 75;
 
+float cx = 475;
+float cy = 910;
+float cw = 75;
+float ch = 75;
+
 float ox = 435;
 float oy = 750;
 float ow = 150;
@@ -62,6 +67,7 @@ float oh = 80;
 boolean started = false;
 
 int gameTime = 0;
+int actualGameTime = 0;
 String level = "facil";
 int screen = 0;
 
@@ -107,6 +113,7 @@ void setup(){
   musicName = loadImage("/img/music.png");
   youWin = loadImage("/img/win.png");
   youLose = loadImage("/img/lose.png");
+  checkInfo = loadImage("/img/check.png");
 }//setup
 
 void draw(){
@@ -155,16 +162,23 @@ void mousePressed() {
       if(mouseX>mx && mouseX <mx+mw && mouseY>my && mouseY <my+mh && screen == 0){
        screen = 1;
   } else if(mouseX>px && mouseX <px+pw && mouseY>py && mouseY <py+ph && screen == 1){
+       actualGameTime = millis();
        screen = 2;
-       level = "facil";
+       level = "facil";       
   }else if(mouseX>ox && mouseX <ox+ow && mouseY>oy && mouseY <oy+oh && screen == 1){
+       actualGameTime = millis();
        screen = 2;
        level = "dificil";
   }else if(mouseX>vx && mouseX <vx+vw && mouseY>vy && mouseY <vy+vh && screen == 1){
        screen = 3;
   }else if(mouseX>ex && mouseX <ex+ew && mouseY>ey && mouseY <ey+eh && screen == 1){
        exit();
+  }else if(mouseX>cx && mouseX <cx+cw && mouseY>cy && mouseY <cy+ch && screen == 3){
+       screen = 1;
   }else if(screen == 4){
+    screen = 1; 
+  }
+  else if(screen == 5){
     screen = 1; 
   }
  }
@@ -196,7 +210,7 @@ void keyPressed() {
   }
 }
 
-void screen0(){
+void screen0(){  
    //********** PANTALLA PROJECTOR **********
     textFont(fontBold);
     textSize(70);
@@ -218,6 +232,8 @@ void screen0(){
 
 //INICI
 void screen1(){
+    fails = 0;
+    score = 0;
     //********** PANTALLA PROJECTOR **********
     textFont(fontBold);
     textSize(70);
@@ -245,17 +261,17 @@ void screen1(){
     text("INFO", 444, 990);
     image(help, 444,920,80,80);
     image(exitGame, 580,920, 80,80);
+    stroke(255);
 }
 
 //GAME
-void screen2(){
+void screen2(){    
     gameTime = millis();
     //********** PANTALLA PROJECTOR **********
     textFont(fontBold);
     textSize(45);
     textAlign(CENTER);
     fill(255);
-    text("Baby Shark - PinkFong!", 512,130);
     
     imageMode(CENTER);
     image(musicName, 230,115, 60,60);
@@ -288,13 +304,27 @@ void screen2(){
     //play music
     if (this.level == "facil"){
       file.play();
+      text("Space Unicorn - ParryGripp", 512,130);
     }else{
       file2.play();
+      text("Baby Shark - Pinkfong!", 512,130);
+    }
+    
+    if (fails >= 10){
+        screen = 5;
+        file.rewind();
+        file2.rewind();
+        file.pause();
+        file2.pause();
+        figures = new ArrayList<Figura>();        
     }
 
-    if (gameTime > 98000){
-      screen = 4;
-      gameTime = 0;
+    if (gameTime > 98000 + actualGameTime){
+      file.rewind();
+      file2.rewind();
+      file.pause();
+      file2.pause();
+      screen = 4;      
     }
     
     crearFigures();
@@ -310,9 +340,11 @@ void crearFigures(){
   }else{
     musica = this.babyshark;
   }
+  print(gameTime + " - " + actualGameTime + " = " + (gameTime - actualGameTime) + "\n");
+
   for (int i = 0 ; i <= 3 ; i++){
       for (int j = 0 ; j < musica[i].length-1 ; j++){
-        if (gameTime < musica[i][j] + 9 && gameTime > musica[i][j] - 9){
+        if (gameTime - actualGameTime < musica[i][j] + 9 && gameTime - actualGameTime > musica[i][j] - 9){
           //pintar peça amb numero babyshark[i];
           if (i==0){
             crearQuadratBlau();
@@ -367,11 +399,16 @@ void screen3(){
     image (logo, 512,350);
     
     //********** PANTALLA REACTABLE **********
+    noStroke();
+    fill(0,0,0,0);
+    rect(cx,cy,cw,ch);
     textFont(fontBold);
-    textSize(30);
+    textSize(30);    
+    fill(255);
     text(info, 50, 580, width-100, height-12);
     text(info2,50,710, width-100, height-12);
     text(info3, 50, 800, width-100, height-12);
+    stroke(255);
     
     image (checkInfo, 512,950,80,80);
 }
@@ -444,7 +481,7 @@ void crearQuadratVermell(){
   figures.add(new QuadratVermell(pos,512));
 }
 int calcularPosicio(){
-  int r = int(random(0,3));
+  int r = int(random(0,4));
    if (r == 0){
      return 273;
   }else if (r == 1){
