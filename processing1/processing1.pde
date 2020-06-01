@@ -39,10 +39,20 @@ float my = 505;
 float mw = 1024;
 float mh = 500;
 
-float px = 0;
-float py = 0;
-float pw = 0;
-float ph = 0;
+float px = 435;
+float py = 620;
+float pw = 150;
+float ph = 80;
+
+float vx = 405;
+float vy = 882;
+float vw = 75;
+float vh = 75;
+
+float ex = 542;
+float ey = 882;
+float ew = 75;
+float eh = 75;
 
 float ox = 435;
 float oy = 750;
@@ -137,40 +147,24 @@ void draw(){
   }
  }
 
+
 void mousePressed() {
   //Set the screen when whatever happens that you want to happen
   if(mousePressed){
     print(screen);
       if(mouseX>mx && mouseX <mx+mw && mouseY>my && mouseY <my+mh && screen == 0){
        screen = 1;
-       mx = 0;
-       my = 0;
-       mw = 0;
-       mh = 0;
-       px = 435;
-       py = 620;
-       pw = 150;
-       ph = 80;
-       ox = 435;
-       oy = 750;
-       ow = 150;
-       oh = 80;
-  }  
-      if(mouseX>px && mouseX <px+pw && mouseY>py && mouseY <py+ph && screen == 1){
+  } else if(mouseX>px && mouseX <px+pw && mouseY>py && mouseY <py+ph && screen == 1){
        screen = 2;
-       ox = 0;
-       oy = 0;
-       ow = 0;
-       oh = 0;
-  }
-      if(mouseX>ox && mouseX <ox+ow && mouseY>oy && mouseY <oy+oh && screen == 2){
+       level = "facil";
+  }else if(mouseX>ox && mouseX <ox+ow && mouseY>oy && mouseY <oy+oh && screen == 1){
+       screen = 2;
+       level = "dificil";
+  }else if(mouseX>vx && mouseX <vx+vw && mouseY>vy && mouseY <vy+vh && screen == 1){
        screen = 3;
-       px = 0;
-       py = 0;
-       pw = 0;
-       ph = 0;
-  }
-  if (screen == 4){
+  }else if(mouseX>ex && mouseX <ex+ew && mouseY>ey && mouseY <ey+eh && screen == 1){
+       exit();
+  }else if(screen == 4){
     screen = 1; 
   }
  }
@@ -178,6 +172,7 @@ void mousePressed() {
 
 void keyPressed() {
    // exit();
+
   if (screen == 2) {   
     if (mouseButton == LEFT){
       for (Figura figura : new ArrayList<Figura>(figures)){
@@ -236,10 +231,13 @@ void screen1(){
     fill(0,0,0,0);
     rect(px,py,pw,ph);
     rect(ox,oy,ow,oh);
+    noStroke();
+    rect(vx,vy,vw,vh);
+    rect(ex,ey,ew,eh);
     textSize(32);
     fill(255);
-    text("START", 510, 670);
-    //text("OPTIONS", 510, 800);
+    text("EASY", 510, 670);
+    text("HARD", 510, 800);
     
     textFont(fontBold);
     textSize(18);
@@ -296,6 +294,7 @@ void screen2(){
 
     if (gameTime > 98000){
       screen = 4;
+      gameTime = 0;
     }
     
     crearFigures();
@@ -442,7 +441,7 @@ void crearQuadratGroc(){
 }
 void crearQuadratVermell(){
   int pos = calcularPosicio();
-  figures.add(new QuadratVermell(pos,512));q
+  figures.add(new QuadratVermell(pos,512));
 }
 int calcularPosicio(){
   int r = int(random(0,3));
