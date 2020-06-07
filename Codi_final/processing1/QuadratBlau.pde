@@ -1,0 +1,51 @@
+class QuadratBlau extends Figura{
+  float posx, posy;
+  QuadratBlau(int posx,int posy){
+    super(posx,posy);
+    this.posx = posx;
+    this.posy = posy;
+  }
+  
+  @ Override public void pintar(){
+    fill(41, 128, 185);
+    rect(posx,posy,50,50);    
+    posy = posy +1;
+  }
+  
+  @ Override public float getY(){
+    return this.posy;
+  }
+  public  boolean isOver()
+  {  
+    if (mouseX > this.posx
+        && mouseX < this.posx+50
+        && mouseY > this.posy
+        && mouseY < this.posy+50)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+  }
+  
+  public  boolean isOverTuioB(float xb, float yb, int idb)
+  {
+    if (xb > this.posx
+        && xb < this.posx+50
+        && yb > this.posy
+        && yb < this.posy+50 && idb == 4)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+  }
+  
+  public String getColour(){
+     return "blue"; 
+  }
+}
